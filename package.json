@@ -1,0 +1,22 @@
+{
+  "name": "mailer",
+  "version": "0.0.0-development",
+  "description": "A contact form backend, but serverless.",
+  "main": "index.js",
+  "repository": "https://github.com/dylanon/mailer",
+  "author": "Dylan On <hey@dylanon.com>",
+  "license": "MIT",
+  "dependencies": {
+    "nodemailer": "^6.3.1"
+  },
+  "devDependencies": {
+    "@now/node": "^1.0.2",
+    "@types/nodemailer": "^6.2.1",
+    "git-cz": "^3.2.1",
+    "now": "^16.4.0"
+  },
+  "scripts": {
+    "cz": "git-cz",
+    "develop": "now dev"
+  }
+}

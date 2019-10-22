@@ -1,0 +1,7 @@
+{
+  "env": {
+    "MAIL_USER": "@namespace-mail-user",
+    "MAIL_PASS": "@namespace-mail-pass",
+    "MAIL_SEND_TO": "@namespace-mail-send-to"
+  }
+}
