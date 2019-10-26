@@ -1,4 +1,5 @@
 {
+  "name": "mailer",
   "env": {
     "MAIL_USER": "@namespace-mail-user",
     "MAIL_PASS": "@namespace-mail-pass",
