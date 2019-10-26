@@ -3,5 +3,16 @@
     "MAIL_USER": "@namespace-mail-user",
     "MAIL_PASS": "@namespace-mail-pass",
     "MAIL_SEND_TO": "@namespace-mail-send-to"
-  }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS"
+      },
+      "continue": true
+    }
+  ]
 }

@@ -1,27 +1,46 @@
 import { NowRequest, NowResponse } from '@now/node'
 import nodemailer from 'nodemailer'
-import EnvVariable from '../types/EnvVariable'
-import BodyProperty from '../types/BodyProperty'
+import EnvVariable from '../../types/EnvVariable'
+import BodyProperty from '../../types/BodyProperty'
 
 export default (request: NowRequest, response: NowResponse) => {
-  const badRequestError = (reason: string): void => {
-    response.status(400).send(reason)
-    return
+  const createResponse = (statusCode: number, message: string) => {
+    return {
+      statusCode,
+      message,
+    }
+  }
+
+  const badRequestError = (reason: string): NowResponse => {
+    return response.json(createResponse(400, reason))
+  }
+
+  const internalServerError = (reason: string): NowResponse => {
+    return response.json(createResponse(500, reason))
   }
 
   if (request.method !== 'POST') {
     return badRequestError(`Invalid HTTP method.`)
   }
 
-  const retrieveEnvVariable = (variableName: EnvVariable) => {
-    return process.env[variableName]
+  const retrieveEnvVariable = (variableName: EnvVariable): string => {
+    return process.env[variableName] || ''
   }
 
   const mailUser = retrieveEnvVariable(EnvVariable.MAIL_USER)
   const mailPass = retrieveEnvVariable(EnvVariable.MAIL_PASS)
   const mailTo = retrieveEnvVariable(EnvVariable.MAIL_SEND_TO)
 
-  const { body } = request
+  const {
+    body = {},
+  }: {
+    body: {
+      senderName?: string
+      senderEmail?: string
+      message?: string
+      subject?: string
+    }
+  } = request
 
   if (!body) {
     return badRequestError(`Missing request body.`)
@@ -52,10 +71,10 @@ export default (request: NowRequest, response: NowResponse) => {
   }
 
   const {
-    senderName,
-    subject,
-    message: text,
-    senderEmail,
+    senderName = '',
+    subject = '',
+    message: text = '',
+    senderEmail = '',
     ...otherBodyProperties
   } = body
   const hasDisplayName = !!senderName.trim()
@@ -75,7 +94,7 @@ export default (request: NowRequest, response: NowResponse) => {
   })
   transporter.verify(error => {
     if (error) {
-      response.status(500).send(`Invalid transporter config.`)
+      response.json(internalServerError(`Invalid transporter config.`))
     }
   })
   const message = {
@@ -83,46 +102,43 @@ export default (request: NowRequest, response: NowResponse) => {
     to: mailTo,
     subject: displaySubject,
     text: `
-You received an email from ${
-      hasDisplayName ? `${senderName} (${senderEmail})` : senderEmail
-    }.
+  You received an email from ${
+    hasDisplayName ? `${senderName} (${senderEmail})` : senderEmail
+  }.
 
-Here's the message:
+  Here's the message:
 
+  ${text}
 
-${text}
+  ${
+    otherBodyPropertyEntries.length
+      ? `
+  ---------------------------------------------------
+  Here's the additional information collected by your email form:
 
+  ${otherBodyPropertyEntries
+    .map(([name, value]) => {
+      return `${name}: ${value}`
+    })
+    .join('\n')}
+  `
+      : `---------------------------------------------------`
+  }
+  You can reply to ${
+    hasDisplayName ? senderName : 'them'
+  } by replying to this e-mail.
 
-${
-  otherBodyPropertyEntries.length
-    ? `
----------------------------------------------------
-Here's the additional information collected by your email form:
-
-${otherBodyPropertyEntries
-  .map(([name, value]) => {
-    return `${name}: ${value}`
-  })
-  .join('\n')}
-`
-    : `---------------------------------------------------`
-}
-You can reply to ${
-      hasDisplayName ? senderName : 'them'
-    } by replying to this e-mail.
-
-Love,
-Your Friendly Neighbourhood Mailer 🤖
-    `,
+  Love,
+  Your Friendly Neighbourhood Mailer 🤖
+      `,
     sender: `Mailer`,
     replyTo: senderEmail,
   }
-  transporter.sendMail(message, (error, ...args) => {
+  transporter.sendMail(message, error => {
     if (error) {
-      console.log(error)
-      response.status(500).send(`Message failed to send`)
+      response.json(internalServerError(`Message failed to send`))
     } else {
-      response.status(200).send(`Sent!`)
+      response.json(createResponse(200, `Sent!`))
     }
   })
 }
