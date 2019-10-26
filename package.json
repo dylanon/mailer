@@ -17,6 +17,8 @@
   },
   "scripts": {
     "cz": "git-cz",
-    "develop": "now dev"
+    "develop": "now dev",
+    "deploy:staging": "now",
+    "deploy:prod": "now --prod"
   }
 }
