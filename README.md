@@ -7,17 +7,28 @@ Email form serverless function built for [Zeit Now](https://github.com/zeit/now)
 ### Add secrets
 
 The Dreamhost-hosted email address that messages will be sent from (your "mailer" address):
-`npx now secrets add namespace-mail-user youraddresshere@email.com`
+
+```bash
+npx now secrets add namespace-mail-user youraddresshere@email.com
+```
 
 The password for that email address:
-`npx now secrets add namespace-mail-pass yourpasswordhere`
+
+```bash
+npx now secrets add namespace-mail-pass yourpasswordhere
+```
 
 The email address that messages will be sent to:
-`npx now secrets add namespace-mail-send-to yourrecipienthere@email.com`
+
+```bash
+npx now secrets add namespace-mail-send-to yourrecipienthere@email.com
+```
 
 ### Deploy to Now
 
-`yarn deploy:prod`
+```bash
+yarn deploy:prod
+```
 
 ## Usage
 
