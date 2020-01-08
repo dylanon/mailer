@@ -13,7 +13,7 @@
     "@now/node": "^1.0.2",
     "@types/nodemailer": "^6.2.1",
     "git-cz": "^3.2.1",
-    "now": "^16.4.0"
+    "now": "^16.7.1"
   },
   "scripts": {
     "cz": "git-cz",

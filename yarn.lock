@@ -53,10 +53,10 @@ nodemailer@^6.3.1:
   resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.3.1.tgz#2784beebac6b9f014c424c54dbdcc5c4d1221346"
   integrity sha512-j0BsSyaMlyadEDEypK/F+xlne2K5m6wzPYMXS/yxKI0s7jmT1kBx6GEKRVbZmyYfKOsjkeC/TiMVDJBI/w5gMQ==
 
-now@^16.4.0:
-  version "16.4.3"
-  resolved "https://registry.yarnpkg.com/now/-/now-16.4.3.tgz#ff194b6addd2974e638dbaadbd15340d9d14ea99"
-  integrity sha512-BF4Zx6/RRovRWmShJB6O8vEkUT/baNWgxwerXjdJpG4xAiWP0s1EpXCEanDNMzaCWOuG+RaNxwHpOTyVNWWULg==
+now@^16.7.1:
+  version "16.7.1"
+  resolved "https://registry.yarnpkg.com/now/-/now-16.7.1.tgz#b936ee398588849d0374bb76196e43b8cbe14738"
+  integrity sha512-iAf6eUaVXc2phDUcM2kYCevhSmk10DRWEraRAUstwUChx14DJRB1Kb65M65Bk13qBXkHIjdfTAH2dR4s1y64+w==
 
 process@^0.11.10:
   version "0.11.10"
